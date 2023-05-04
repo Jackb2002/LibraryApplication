@@ -15,6 +15,8 @@ public class LoginController {
     public LoginController(Stage stage) {
         this.stage = stage;
         System.out.println("LoginController created");
+        Database.Init();
+        System.out.println("Database initialized");
     }
     @FXML
     private void exitPress() {
@@ -24,7 +26,7 @@ public class LoginController {
     private void loginPress() throws IOException {
         String user = userTxt.getText();
         String pass = passTxt.getText();
-        if (user.equals("user") && pass.equals("user")) {
+        if (Database.Login(user, pass)) {
             System.out.println("Login successful");
             stage.hide();
             Stage newStage = new Stage();

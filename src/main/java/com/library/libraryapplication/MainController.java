@@ -2,36 +2,29 @@ package com.library.libraryapplication;
 
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.sql.*;
 
 public class MainController {
-    private Stage stage;
+    private final Stage stage;
 
     @FXML
     private javafx.scene.control.TableView dataTable;
 
 
-    public MainController(Stage stage) {
+    public MainController(Stage stage){
         this.stage = stage;
         stage.setWidth(1200);
         stage.setHeight(600);
         System.out.println("MainController created");
         System.out.println("Loading data from database...");
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:library.db");
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM items");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("title"));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        System.out.println("Data loaded");
     }
 
     //logoutBtn
     @FXML
-    private void logoutPress() {
+    private void logoutBtn() {
         stage.hide();
         System.exit(0);
     }
