@@ -15,8 +15,6 @@ public class LoginController {
     public LoginController(Stage stage) {
         this.stage = stage;
         System.out.println("LoginController created");
-        Database.Init();
-        System.out.println("Database initialized");
     }
     @FXML
     private void exitPress() {

@@ -1,11 +1,14 @@
 package com.library.libraryapplication.Users;
 
 public class UnprivellagedUser extends User{
-    public User Manager;
 
-    public UnprivellagedUser(String Username, String Password, User Manager){
-        super(Username, Password);
-        this.Manager = Manager;
+    public static UnprivellagedUser[] Users;
+    public int Manager_ID;
+
+
+    public UnprivellagedUser(int ID, String Username, String Password, int Manager){
+        super(ID, Username, Password);
+        Manager_ID = Manager;
     }
 
 }

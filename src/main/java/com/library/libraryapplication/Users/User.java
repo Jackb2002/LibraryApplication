@@ -1,10 +1,14 @@
 package com.library.libraryapplication.Users;
 
 public class User {
-    String Username;
-    String Password;
+    public static User[] Users;
 
-    public User(String Username, String Password){
+    public int ID;
+    public String Username;
+    public String Password;
+
+    public User(int ID, String Username, String Password){
+        this.ID = ID;
         this.Username = Username;
         this.Password = Password;
     }
