@@ -1,14 +1,15 @@
 package com.library.libraryapplication.Items;
 
 public class Film extends Item{
-    String Director;
-    int Duration;
-    String Format;
-    String Resolution;
+    public static Film[] Films;
+    public String Director;
+    public int Duration;
+    public String Format;
+    public String Resolution;
 
-    public Film(double dayPrice, String description, int ID, boolean loaned, String name, double overduePrice,
+    public Film(double dayPrice, String description, int ID, boolean loaned, String name, double overduePrice, String filename,
                 String director, int duration, String format, String resolution) {
-        super(dayPrice, description, ID, loaned, name, overduePrice);
+        super(dayPrice, description, ID, loaned, name, overduePrice, filename);
         Director = director;
         Duration = duration;
         Format = format;

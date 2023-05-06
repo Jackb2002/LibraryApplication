@@ -1,5 +1,9 @@
 package com.library.libraryapplication;
 
+import com.library.libraryapplication.Items.AudioBook;
+import com.library.libraryapplication.Items.Book;
+import com.library.libraryapplication.Items.BrailleBook;
+import com.library.libraryapplication.Items.Film;
 import com.library.libraryapplication.Users.Administrator;
 import com.library.libraryapplication.Users.UnprivellagedUser;
 import javafx.fxml.FXML;
@@ -21,7 +25,8 @@ public class MainController {
         stage.setWidth(1200);
         stage.setHeight(600);
         System.out.println("MainController created");
-        System.out.println("Loading data from database...");
+        System.out.println("Loading item data from database...");
+        Database.LoadItems();
         System.out.println("Data loaded");
 
 
@@ -40,6 +45,8 @@ public class MainController {
         stage.hide();
         DatabaseSerialiser.SaveUsers(List.of(Administrator.Users),
                 List.of(UnprivellagedUser.Users));
+        DatabaseSerialiser.SaveItems(List.of(Film.Films), List.of(Book.Books),
+                List.of(AudioBook.AudioBooks), List.of(BrailleBook.BrailleBooks));
         System.exit(0);
     }
 
