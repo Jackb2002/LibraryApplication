@@ -169,6 +169,15 @@ public class Database {
                 BrailleBook.BrailleBooks.length + " braille books");
     }
 
+    public static User GetUser(String user) {
+        for(User u : User.Users){
+            if(u.Username.equals(user)){
+                return u;
+            }
+        }
+        return null;
+    }
+
     public String Query(String Query){
         try {
             return conn.createStatement().executeQuery(Query).toString();

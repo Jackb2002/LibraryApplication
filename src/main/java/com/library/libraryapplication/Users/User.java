@@ -2,7 +2,8 @@ package com.library.libraryapplication.Users;
 
 public class User {
     public static User[] Users;
-
+    public static User Current;
+    
     public int ID;
     public String Username;
     public String Password;
