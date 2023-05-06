@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
-    private Stage stage;
+    private final Stage stage;
     @FXML
     private javafx.scene.control.TextField passTxt;
     @FXML

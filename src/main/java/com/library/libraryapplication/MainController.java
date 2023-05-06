@@ -11,8 +11,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainController {
     private final Stage stage;
@@ -35,9 +35,7 @@ public class MainController {
         Database.LoadItems();
         System.out.println("Data loaded");
 
-        stage.setOnCloseRequest(event -> {
-            logoutBtn();
-        });
+        stage.setOnCloseRequest(event -> logoutBtn());
         stage.setOnShown(event -> {
 
             dataTable.getItems().clear();
@@ -121,7 +119,7 @@ public class MainController {
         Item item = Database.GetItemByID(ID);
 
         //check if item is already loaned
-        if (item.Loaned) {
+        if (Objects.requireNonNull(item).Loaned) {
             System.out.println("Item already loaned");
             return;
         }
@@ -149,7 +147,7 @@ public class MainController {
         Item item = Database.GetItemByID(ID);
 
         //check if item is already loaned
-        if (!item.Loaned) {
+        if (!Objects.requireNonNull(item).Loaned) {
             System.out.println("Item already returned");
             return;
         }

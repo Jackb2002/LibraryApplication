@@ -27,7 +27,6 @@ public class Database {
         File databaseFile = new File("database.db");
         String path = databaseFile.getAbsolutePath();
         System.out.println("Opening database at "+ path);
-        boolean databaseExists = databaseFile.exists();
 
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getAbsolutePath());
@@ -46,11 +45,7 @@ public class Database {
     }
 
     public static void ClearTable(String name){
-        try {
-            conn.createStatement().execute("DELETE FROM " + name);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Query("DELETE FROM " + name);
     }
 
 
@@ -73,16 +68,16 @@ public class Database {
     public static void LoadUsers() {
         try {
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM users");
-            List<User> users = new ArrayList<User>();
-            List<Administrator> administrators = new ArrayList<Administrator>();
-            List<UnprivellagedUser> unprivilegedUsers = new ArrayList<UnprivellagedUser>();
+            List<User> users = new ArrayList<>();
+            List<Administrator> administrators = new ArrayList<>();
+            List<UnprivellagedUser> unprivilegedUsers = new ArrayList<>();
             while(rs.next()){
                 int ID = rs.getInt("id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 users.add(new User(ID, username, password));
 
-                boolean admin = rs.getString("admin") == "1";
+                boolean admin = Objects.equals(rs.getString("admin"), "1");
                 if(admin){
                     administrators.add(new Administrator(ID, username, password));
                 }
@@ -103,11 +98,11 @@ public class Database {
     public static void LoadItems() {
         try {
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM items");
-            List<Item> items = new ArrayList<Item>();
-            List<Film> films = new ArrayList<Film>();
-            List<Book> books = new ArrayList<Book>();
-            List<AudioBook> audioBooks = new ArrayList<AudioBook>();
-            List<BrailleBook> brailleBooks = new ArrayList<BrailleBook>();
+            List<Item> items = new ArrayList<>();
+            List<Film> films = new ArrayList<>();
+            List<Book> books = new ArrayList<>();
+            List<AudioBook> audioBooks = new ArrayList<>();
+            List<BrailleBook> brailleBooks = new ArrayList<>();
             while(rs.next()){
                 int ID = rs.getInt("id");
                 double day_price = rs.getDouble("day_price");
@@ -178,11 +173,12 @@ public class Database {
         return null;
     }
 
-    public String Query(String Query){
+
+    public static void Query(String Query){
         try {
-            return conn.createStatement().executeQuery(Query).toString();
+            conn.createStatement().executeQuery(Query).toString();
         } catch (SQLException e) {
-            return e.getMessage();
+            e.getMessage();
         }
     }
 
@@ -192,7 +188,6 @@ public class Database {
         double day_price = item.DayPrice;
         String description = item.Description;
         int loaned = item.Loaned ? 1 : 0;
-        System.out.println("loaned: " + loaned);
         String name = item.Name;
         double overdue_price = item.OverduePrice;
         String filename = item.Filename;
@@ -205,8 +200,6 @@ public class Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //System.out.println("Item record: " + ID + ", " + day_price + ", '" + description + "', " + loaned + ", '" + name
-                //+ "', " + overdue_price + ", '" + filename + "'");
         System.out.println("Item inserted into master table ID: " + ID + " Name: " + name);
 
         if(type == Film.class){
@@ -276,7 +269,6 @@ public class Database {
         int pages = item.Pages;
         String publisher = item.publisher;
         int year = item.year;
-        String type = "book";
 
         try {
             conn.createStatement().execute("INSERT INTO books (id, author, genre, isbn, language, pages, publisher, year)" +
@@ -301,7 +293,7 @@ public class Database {
         }
     }
 
-    public static Item GetItemByID(int ID){
+    static Item GetItemByID(int ID){
         for(Film f : Film.Films){
             if(f.ID == ID){
                 return f;
