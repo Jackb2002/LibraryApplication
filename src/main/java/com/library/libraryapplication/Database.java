@@ -112,7 +112,7 @@ public class Database {
                 int ID = rs.getInt("id");
                 double day_price = rs.getDouble("day_price");
                 String description = rs.getString("description");
-                boolean loaned = rs.getString("loaned") == "1";
+                boolean loaned = rs.getInt("loaned") == 1;
                 String name = rs.getString("name");
                 double overdue_price = rs.getDouble("overdue_price");
                 String filename = rs.getString("filename");
@@ -191,7 +191,8 @@ public class Database {
         int ID = item.ID;
         double day_price = item.DayPrice;
         String description = item.Description;
-        boolean loaned = item.Loaned;
+        int loaned = item.Loaned ? 1 : 0;
+        System.out.println("loaned: " + loaned);
         String name = item.Name;
         double overdue_price = item.OverduePrice;
         String filename = item.Filename;
@@ -199,11 +200,13 @@ public class Database {
         try {
             conn.createStatement().execute("INSERT INTO items (id, day_price, description, loaned, name" +
                     ", overdue_price, filename)" +
-                    " VALUES (" + ID + ", " + day_price + ", '" + description + "', " + (loaned ? 1 : 0) + ", '" + name
+                    " VALUES (" + ID + ", " + day_price + ", '" + description + "', " + loaned + ", '" + name
                     + "', " + overdue_price + ", '" + filename + "')");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        //System.out.println("Item record: " + ID + ", " + day_price + ", '" + description + "', " + loaned + ", '" + name
+                //+ "', " + overdue_price + ", '" + filename + "'");
         System.out.println("Item inserted into master table ID: " + ID + " Name: " + name);
 
         if(type == Film.class){
@@ -296,5 +299,29 @@ public class Database {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Item GetItemByID(int ID){
+        for(Film f : Film.Films){
+            if(f.ID == ID){
+                return f;
+            }
+        }
+        for(AudioBook a : AudioBook.AudioBooks){
+            if(a.ID == ID){
+                return a;
+            }
+        }
+        for(BrailleBook b : BrailleBook.BrailleBooks){
+            if(b.ID == ID){
+                return b;
+            }
+        }
+        for(Book b : Book.Books){
+            if(b.ID == ID){
+                return b;
+            }
+        }
+        return null;
     }
 }

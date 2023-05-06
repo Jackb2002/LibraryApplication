@@ -3,18 +3,14 @@ package com.library.libraryapplication;
 import com.library.libraryapplication.Items.*;
 import com.library.libraryapplication.Users.Administrator;
 import com.library.libraryapplication.Users.UnprivellagedUser;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -117,8 +113,12 @@ public class MainController {
             return;
         }
 
-        //get item from row using predicate
-        Item item = Arrays.stream(Item.Items).filter(x -> x.ID == (int) row.get("ID")).findFirst().get();
+        int ID = (int) row.get("ID");
+        if(Database.GetItemByID(ID) == null){
+            System.out.println("Item not found");
+            return;
+        }
+        Item item = Database.GetItemByID(ID);
 
         //check if item is already loaned
         if (item.Loaned) {
@@ -141,8 +141,12 @@ public class MainController {
             return;
         }
 
-        //get item from row using predicate
-        Item item = Arrays.stream(Item.Items).filter(x -> x.ID == (int) row.get("ID")).findFirst().get();
+        int ID = (int) row.get("ID");
+        if(Database.GetItemByID(ID) == null){
+            System.out.println("Item not found");
+            return;
+        }
+        Item item = Database.GetItemByID(ID);
 
         //check if item is already loaned
         if (!item.Loaned) {
@@ -150,6 +154,7 @@ public class MainController {
             return;
         }
         item.Loaned = false;
+
         int index = dataTable.getItems().indexOf(row);
         row.put("Loaned", "No");
         dataTable.getItems().set(index, row);
