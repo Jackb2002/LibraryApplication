@@ -35,6 +35,23 @@ public class Database {
         }
     }
 
+    public static void LoanItem(int ID, long time){
+        Query("INSERT INTO loan_times (id,loan_time) VALUES (" + ID + ", " + time + ")");
+    }
+
+    public static long GetLoanTime(int ID){
+        try{
+            return conn.createStatement().executeQuery("SELECT * FROM loan_times WHERE id = " + ID)
+                    .getLong("loan_time");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void ReturnItem(int ID){
+        Query("DELETE FROM loan_times WHERE id = " + ID);
+    }
+
     public static boolean Login(String user, String pass) {
         try {
             return conn.createStatement().executeQuery("SELECT * FROM users WHERE username = '" + user + "'" +

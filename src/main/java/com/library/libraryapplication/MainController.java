@@ -127,6 +127,7 @@ public class MainController {
         int index = dataTable.getItems().indexOf(row);
         row.put("Loaned", "Yes");
         dataTable.getItems().set(index, row);
+        item.Loan();
     }
 
     @FXML
@@ -156,9 +157,12 @@ public class MainController {
         int index = dataTable.getItems().indexOf(row);
         row.put("Loaned", "No");
         dataTable.getItems().set(index, row);
+        item.Return();
     }
     @FXML
-    private void infoBtn(){}
+    private void infoBtn(){
+
+    }
     @FXML
     private void printFileBtn(){}
     @FXML

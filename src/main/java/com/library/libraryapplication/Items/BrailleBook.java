@@ -12,4 +12,8 @@ public class BrailleBook extends Book{
                 , pages);
         this.Transcriber = Transcriber;
     }
+
+    public String GetInfoText(){
+        return super.GetInfoText() + "\nTranscriber: " + Transcriber;
+    }
 }

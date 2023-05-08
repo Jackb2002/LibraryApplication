@@ -15,4 +15,12 @@ public class Film extends Item{
         Format = format;
         Resolution = resolution;
     }
+
+    public String GetInfoText(){
+        return super.GetIntoText() + "\n" +
+                "Director: " + Director + "\n" +
+                "Duration: " + Duration + "\n" +
+                "Format: " + Format + "\n" +
+                "Resolution: " + Resolution + "\n";
+    }
 }

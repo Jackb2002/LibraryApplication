@@ -1,5 +1,7 @@
 package com.library.libraryapplication.Items;
 
+import com.library.libraryapplication.Database;
+
 import java.lang.reflect.Type;
 
 public class Item {
@@ -25,11 +27,18 @@ public class Item {
     }
 
     public void Loan(){
-        Loaned = true;
+        var time = System.currentTimeMillis();
+        Database.LoanItem(ID, time);
     }
-    public void Return(){
-        Loaned = false;
+    public void Return(){Database.ReturnItem(ID);}
+
+    protected String GetIntoText() {
+        return
+                "Name: " + Name + "\n" +
+                "Description: " + Description + "\n" +
+                "DayPrice: " + DayPrice + "\n" +
+                "OverduePrice: " + OverduePrice + "\n" +
+                "ID: " + ID + "\n" +
+                "Loaned: " + Loaned + "\n";
     }
-
-
 }

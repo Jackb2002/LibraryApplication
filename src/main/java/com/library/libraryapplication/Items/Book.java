@@ -22,4 +22,16 @@ public class Book extends Item{
         this.publisher = publisher;
         this.year = year;
     }
+
+    public String GetInfoText(){
+        return super.GetIntoText() + "\n" +
+                "Author: " + author + "\n" +
+                "Genre: " + genre + "\n" +
+                "ISBN: " + ISBN + "\n" +
+                "Language: " + language + "\n" +
+                "Publisher: " + publisher + "\n" +
+                "Year: " + year + "\n" +
+                "Pages: " + Pages + "\n" +
+                "Description: " + Description;
+    }
 }

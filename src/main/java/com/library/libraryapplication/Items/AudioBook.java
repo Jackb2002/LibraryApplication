@@ -17,4 +17,11 @@ public class AudioBook extends Book{
         this.format = format;
     }
 
+    public String GetInfoText() {
+        return super.GetInfoText() + "\n" +
+                "Duration: " + duration + "\n" +
+                "Narrator: " + narrator + "\n" +
+                "Format: " + format;
+    }
+
 }
