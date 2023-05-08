@@ -39,6 +39,6 @@ public class Item {
                 "DayPrice: " + DayPrice + "\n" +
                 "OverduePrice: " + OverduePrice + "\n" +
                 "ID: " + ID + "\n" +
-                "Loaned: " + Loaned + "\n";
+                "Loaned: " + Loaned;
     }
 }

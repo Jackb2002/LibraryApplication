@@ -43,6 +43,13 @@ public class DatabaseSerialiser {
         System.out.println("Loaded items");
     }
 
+    public static void removeItem(int id){
+        Database.Query("DELETE FROM books WHERE id = '" + id + "'");
+        Database.Query("DELETE FROM films WHERE id = '" + id + "'");
+        Database.Query("DELETE FROM loan_times WHERE id = '" + id + "'");
+        Database.Query("DELETE FROM items WHERE id = '" + id + "'");
+    }
+
     public static void SaveItems(List<Film> films, List<Book> books, List<AudioBook> audioBooks,
                                  List<BrailleBook> brailleBooks){
         Database.ClearTable("items");

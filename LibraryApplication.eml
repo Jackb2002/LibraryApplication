@@ -4,5 +4,4 @@
 		<excludeFolder url="file://$MODULE_DIR$/.gradle"/>
 		<excludeFolder url="file://$MODULE_DIR$/build"/>
 	</contentEntry>
-	<contentEntry url="file://$MODULE_DIR$"/>
 </component>

@@ -199,6 +199,33 @@ public class Database {
         }
     }
 
+    public static int GetNewItemID(){
+        //get the smallest unused ID number from items table
+        try {
+            ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(id) FROM items");
+            ResultSet rs2 = conn.createStatement().executeQuery("SELECT MAX(id) FROM items");
+            //check if equal
+            if(rs.getInt("COUNT(id)") == rs2.getInt("MAX(id)")){
+                System.out.println("New item ID: " + (rs.getInt("COUNT(id)") + 1));
+                return rs.getInt("COUNT(id)") + 1;
+            }
+            else{
+                rs = conn.createStatement().executeQuery("SELECT id FROM items");
+                int i = 1;
+                while(rs.next()){
+                    if(rs.getInt("id") != i){
+                        System.out.println("New item ID: " + i);
+                        return i;
+                    }
+                    i++;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
+
     public static void InsertItem(Item item, Type type){
         //item fields' id, day_price, description, loaned, name, overdue_price, filename
         int ID = item.ID;
@@ -310,25 +337,49 @@ public class Database {
         }
     }
 
-    static Item GetItemByID(int ID){
+    static <T extends Item> Item GetItemByID(int ID){
         for(Film f : Film.Films){
             if(f.ID == ID){
-                return f;
+                return (T) f;
             }
         }
         for(AudioBook a : AudioBook.AudioBooks){
             if(a.ID == ID){
-                return a;
+                return (T) a;
             }
         }
         for(BrailleBook b : BrailleBook.BrailleBooks){
             if(b.ID == ID){
-                return b;
+                return (T) b;
             }
         }
         for(Book b : Book.Books){
             if(b.ID == ID){
-                return b;
+                return (T) b;
+            }
+        }
+        return null;
+    }
+
+    static Type GetTypeByID(int ID){
+        for(Film f : Film.Films){
+            if(f.ID == ID){
+                return Film.class;
+            }
+        }
+        for(AudioBook a : AudioBook.AudioBooks){
+            if(a.ID == ID){
+                return AudioBook.class;
+            }
+        }
+        for(BrailleBook b : BrailleBook.BrailleBooks){
+            if(b.ID == ID){
+                return BrailleBook.class;
+            }
+        }
+        for(Book b : Book.Books){
+            if(b.ID == ID){
+                return Book.class;
             }
         }
         return null;

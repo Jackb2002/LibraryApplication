@@ -4,15 +4,18 @@ import com.library.libraryapplication.Items.*;
 import com.library.libraryapplication.Users.Administrator;
 import com.library.libraryapplication.Users.UnprivellagedUser;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.Stage;
 
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class MainController {
     private final Stage stage;
@@ -21,6 +24,9 @@ public class MainController {
     private TableView dataTable;
     @FXML
     private Button Manage;
+
+    @FXML
+    private TextArea outputConsole;
 
     public MainController(Stage stage){
         this.stage = stage;
@@ -83,10 +89,15 @@ public class MainController {
         row.put("ID", rowData.ID);
         row.put("Name", rowData.Name);
         row.put("Loaned", rowData.Loaned ? "Yes" : "No");
-        row.put("OverduePrice", rowData.OverduePrice);
-        row.put("DayPrice", rowData.DayPrice);
+        row.put("OverduePrice", "£" + rowData.OverduePrice + "/day");
+        row.put("DayPrice", "£" + rowData.DayPrice);
         row.put("Description", rowData.Description);
         dataTable.getItems().add(row);
+    }
+
+    private Map<String, Object> getCurrentRow() {
+        var row = (Map<String, Object>) dataTable.getSelectionModel().getSelectedItem();
+        return row;
     }
 
     //logoutBtn
@@ -105,7 +116,7 @@ public class MainController {
     private void loanBtn() {
         System.out.println("Loan button pressed");
         //get current row from dataTable
-        var row = (java.util.Map<String, Object>) dataTable.getSelectionModel().getSelectedItem();
+        Map<String, Object> row = getCurrentRow();
         if (row == null) {
             System.out.println("No row selected");
             return;
@@ -134,7 +145,7 @@ public class MainController {
     private void returnBtn(){
         System.out.println("Return button pressed");
         //get current row from dataTable
-        var row = (java.util.Map<String, Object>) dataTable.getSelectionModel().getSelectedItem();
+        Map<String, Object> row = getCurrentRow();
         if (row == null) {
             System.out.println("No row selected");
             return;
@@ -159,18 +170,103 @@ public class MainController {
         dataTable.getItems().set(index, row);
         item.Return();
     }
-    @FXML
-    private void infoBtn(){
 
+    @FXML
+    private String infoBtn(){
+        Map<String, Object> row = getCurrentRow();
+        if (row == null) {
+            System.out.println("No row selected");
+            return "";
+        }
+
+        int ID = (int) row.get("ID");
+        Type t = Database.GetTypeByID(ID);
+        if(t == null){
+            System.out.println("Item not found");
+            return "";
+        }
+        String info = "";
+        if(t == Film.class){
+            Film f = (Film) Database.GetItemByID(ID);
+            info = f.GetInfoText();
+        }
+        else if(t == AudioBook.class) {
+            AudioBook a = (AudioBook) Database.GetItemByID(ID);
+            info = a.GetInfoText();
+        }
+        else if(t == BrailleBook.class) {
+            BrailleBook b = (BrailleBook) Database.GetItemByID(ID);
+            info = b.GetInfoText();
+        }
+        else if(t == Book.class) {
+            Book b = (Book) Database.GetItemByID(ID);
+            info = b.GetInfoText();
+        }
+        else{
+            System.out.println("Item not found");
+        }
+
+        outputConsole.setText(info);
+        return info;
     }
     @FXML
-    private void printFileBtn(){}
+    private void printFileBtn(){
+        String info = infoBtn();
+        outputConsole.setText("");
+        if(info.equals("")){
+            return;
+        }
+        try {
+            File file = new File("info.txt");
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(info);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("File Saved");
+        alert.setHeaderText("File Saved");
+        alert.setContentText("File Saved to info.txt");
+        alert.showAndWait();
+    }
     @FXML
-    private void reloadBtn(){}
+    private void reloadBtn(){LoadDataIntoTable();}
     @FXML
-    private void removeItemBtn(){}
+    private void removeItemBtn(){
+        var row = getCurrentRow();
+
+        if (row == null) {
+            System.out.println("No row selected");
+            return;
+        }
+
+        int ID = (int) row.get("ID");
+        if(Database.GetItemByID(ID) == null){
+            System.out.println("Item not found");
+            return;
+        }
+
+        DatabaseSerialiser.removeItem(ID);
+
+        DatabaseSerialiser.LoadItems();
+        reloadBtn();
+    }
     @FXML
-    private void addItemBtn(){}
+    private void addItemBtn(){
+        FXMLLoader fxmlLoader = new FXMLLoader(LibraryApplication.class.getResource("New.fxml"));
+        fxmlLoader.setController(new NewController(stage));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 320, 240);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("New Record");
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
     @FXML
     private void manageBtn(){}
 
