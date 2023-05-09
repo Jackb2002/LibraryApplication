@@ -1,29 +1,23 @@
 package com.library.libraryapplication.Users;
 
+import java.util.ArrayList;
+
 public class User {
-    public static User[] Users;
+    public static ArrayList<User> Users;
     public static User Current;
-    
-    public int ID;
     public String Username;
     public String Password;
+    public boolean Admin;
 
-    public User(int ID, String Username, String Password){
-        this.ID = ID;
+    public User(String Username, String Password, boolean Admin){
         this.Username = Username;
         this.Password = Password;
+        this.Admin = Admin;
     }
 
     public void ChangePassword(String Password){
         this.Password = Password;
     }
 
-    public void Login(){
-        System.out.println("Logged in as " + Username);
-    }
-
-    public void Logout(){
-        System.out.println("Logged out from " + Username);
-    }
 
 }

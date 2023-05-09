@@ -1,20 +1,15 @@
 package com.library.libraryapplication;
 
-import com.library.libraryapplication.Database;
 import com.library.libraryapplication.Items.AudioBook;
 import com.library.libraryapplication.Items.Book;
 import com.library.libraryapplication.Items.BrailleBook;
 import com.library.libraryapplication.Items.Film;
-import com.library.libraryapplication.Users.Administrator;
-import com.library.libraryapplication.Users.UnprivellagedUser;
 import com.library.libraryapplication.Users.User;
-import javafx.scene.chart.PieChart;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseSerialiser {
-    public static void SaveUsers(List<User> admins, List<User> users) {
+    public static void SaveUsers(List<User> users) {
         System.out.println("Saving users to database");
         System.out.println("Users: " + users.size());
 
@@ -23,11 +18,7 @@ public class DatabaseSerialiser {
 
         //Insert new users
         for (User user : users) {
-            if (user instanceof UnprivellagedUser) {
-                Database.InsertUser(user, UnprivellagedUser.class);
-            } else if (user instanceof Administrator) {
-                Database.InsertUser(user, Administrator.class);
-            }
+            Database.InsertUser(user);
         }
     }
 

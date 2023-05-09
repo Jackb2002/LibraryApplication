@@ -1,20 +1,29 @@
 package com.library.libraryapplication;
 
 import com.library.libraryapplication.Items.*;
-import com.library.libraryapplication.Users.Administrator;
-import com.library.libraryapplication.Users.UnprivellagedUser;
+import com.library.libraryapplication.Users.User;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class MainController {
@@ -47,6 +56,9 @@ public class MainController {
             dataTable.getItems().clear();
             dataTable.setPlaceholder(new Label("Library Data Loading...."));
             LoadDataIntoTable();
+            if(User.Current.Admin){
+                Manage.disableProperty().set(false);
+            }
         });
     }
 
@@ -105,8 +117,7 @@ public class MainController {
     private void logoutBtn() {
         System.out.println("Dumping database contents...");
         stage.hide();
-        DatabaseSerialiser.SaveUsers(List.of(Administrator.Users),
-                List.of(UnprivellagedUser.Users));
+        DatabaseSerialiser.SaveUsers(User.Users);
         DatabaseSerialiser.SaveItems(List.of(Film.Films), List.of(Book.Books),
                 List.of(AudioBook.AudioBooks), List.of(BrailleBook.BrailleBooks));
         System.exit(0);
@@ -268,6 +279,77 @@ public class MainController {
         stage.showAndWait();
     }
     @FXML
-    private void manageBtn(){}
+    private void manageBtn(){
+        FXMLLoader fxmlLoader = new FXMLLoader(LibraryApplication.class.getResource("users.fxml"));
+        fxmlLoader.setController(new UserController(stage));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 320, 240);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Manage Users");
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+    //TODO
+    @FXML
+    private void imageBtn(){
+        var row = getCurrentRow();
+        if(row == null){
+            System.out.println("No row selected");
+            return;
+        }
+        int id = (int) row.get("ID");
+        Item item = Database.GetItemByID(id);
+        var file = item.Filename;
+        if(file == null){
+            System.out.println("No image found");
+            return;
+        }
 
+        //image popup
+        Image image = new Image(file);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(500);
+        imageView.setFitWidth(500);
+        imageView.setPreserveRatio(true);
+        Stage stage = new Stage();
+        stage.setTitle("Image");
+        stage.setScene(new Scene(new StackPane(imageView)));
+        stage.show();
+        //wait 5 seconds
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished( event -> stage.close() );
+    }
+    @FXML
+    private void reportBtn(){
+        System.out.println("Generating Report");
+        String report = "";
+        report += "Total Items: " + Item.Items.length + "\n";
+        report += "Total Books: " + Book.Books.length + "\n";
+        report += "Total Audio Books: " + AudioBook.AudioBooks.length + "\n";
+        report += "Total Braille Books: " + BrailleBook.BrailleBooks.length + "\n";
+        report += "Total Films: " + Film.Films.length + "\n";
+        report += "Total Users: " + User.Users.size() + "\n";
+        report += "Total Admins: " + User.Users.stream().filter(user -> user.Admin).count() + "\n";
+        report += "Time Left For Loans:" + "\n";
+        double loan_profit = 0;
+        try {
+            var rs = Database.Query("SELECT * FROM loan_times");
+            while(rs.next()) {
+                int ID = rs.getInt("id");
+                Item item = Database.GetItemByID(ID);
+                loan_profit += item.DayPrice;
+                String loaned_at = rs.getString("loan_time");
+                String due_at = rs.getString("due_time");
+                report += "ID: " + ID + " Loaned At: " + loaned_at + " Due At: " + due_at + "\n";
+            }
+        }catch(SQLException e){
+            System.out.println("Error getting loan times");
+        }
+        report += "Total Profit From Loans: £" + loan_profit + "\n";
+        outputConsole.setText(report);
+
+    }
 }

@@ -1,8 +1,6 @@
 package com.library.libraryapplication;
 
 import com.library.libraryapplication.Items.*;
-import com.library.libraryapplication.Users.Administrator;
-import com.library.libraryapplication.Users.UnprivellagedUser;
 import com.library.libraryapplication.Users.User;
 
 import java.io.File;
@@ -35,8 +33,14 @@ public class Database {
         }
     }
 
-    public static void LoanItem(int ID, long time){
-        Query("INSERT INTO loan_times (id,loan_time) VALUES (" + ID + ", " + time + ")");
+    public static void LoanItem(int ID, String time, String due){
+        System.out.println("LoanItem: " + ID + ", " + time);
+        try {
+            conn.createStatement().execute("INSERT INTO loan_times (id, loan_time, due_time) VALUES (" + ID + "," +
+                    " " + "'" + time + "', '" + due + "')");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static long GetLoanTime(int ID){
@@ -66,16 +70,15 @@ public class Database {
     }
 
 
-    public static void InsertUser(User user, Type type) {
-        int ID = user.ID;
+    public static void InsertUser(User user) {
         String username = user.Username;
         String password = user.Password;
+        Boolean Admin = user.Admin;
 
         //insert into user table
         try {
-            conn.createStatement().execute("INSERT INTO users (id, username, password, admin, manager_id)" +
-                    " VALUES (" + ID + ", '" + username + "', '" + password + "', " + (type == Administrator.class ? 1
-                    : 0) + ", " + (user instanceof UnprivellagedUser ? ((UnprivellagedUser)user).Manager_ID : 0) + ")");
+            conn.createStatement().execute("INSERT INTO users (username, password, admin) VALUES ('"
+                    + username + "', '" + password + "', " + (Admin ? 1 : 0) + ")");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -85,28 +88,14 @@ public class Database {
     public static void LoadUsers() {
         try {
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM users");
-            List<User> users = new ArrayList<>();
-            List<Administrator> administrators = new ArrayList<>();
-            List<UnprivellagedUser> unprivilegedUsers = new ArrayList<>();
+            ArrayList<User> users = new ArrayList<>();
             while(rs.next()){
-                int ID = rs.getInt("id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                users.add(new User(ID, username, password));
-
                 boolean admin = Objects.equals(rs.getString("admin"), "1");
-                if(admin){
-                    administrators.add(new Administrator(ID, username, password));
-                }
-                else{
-                    int manager_id = rs.getInt("manager_id");
-
-                    unprivilegedUsers.add(new UnprivellagedUser(ID, username, password,manager_id));
-                }
+                users.add(new User(username, password, admin));
             }
-            User.Users = users.toArray(new User[0]);
-            Administrator.Users = administrators.toArray(new Administrator[0]);
-            UnprivellagedUser.Users = unprivilegedUsers.toArray(new UnprivellagedUser[0]);
+            User.Users = users;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -191,12 +180,13 @@ public class Database {
     }
 
 
-    public static void Query(String Query){
+    public static ResultSet Query(String Query){
         try {
-            conn.createStatement().executeQuery(Query).toString();
+            return conn.createStatement().executeQuery(Query);
         } catch (SQLException e) {
             e.getMessage();
         }
+        return null;
     }
 
     public static int GetNewItemID(){
@@ -383,5 +373,13 @@ public class Database {
             }
         }
         return null;
+    }
+
+    public static void DeleteUser(String username) {
+        try {
+            conn.createStatement().execute("DELETE FROM users WHERE username = '" + username + "'");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -27,8 +27,10 @@ public class Item {
     }
 
     public void Loan(){
-        var time = System.currentTimeMillis();
-        Database.LoanItem(ID, time);
+        //get time in format dd/mm/yyyy hh:mm:ss
+        String time = java.time.LocalDate.now().toString();
+        String due = java.time.LocalDate.now().plusDays(7).toString();
+        Database.LoanItem(ID, time, due);
     }
     public void Return(){Database.ReturnItem(ID);}
 

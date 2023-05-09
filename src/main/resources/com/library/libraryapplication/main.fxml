@@ -55,7 +55,7 @@
             </Menu>
       </menus>
     </MenuBar>
-      <TableView fx:id="dataTable" prefHeight="300.0" prefWidth="900.0" />
+      <TableView fx:id="dataTable" prefHeight="299.0" prefWidth="705.0" />
       <GridPane prefHeight="278.0" prefWidth="900.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -76,45 +76,47 @@
          <children>
             <Button mnemonicParsing="false" onAction="#loanBtn" prefHeight="33.0" prefWidth="138.0" text="Loan out">
                <GridPane.margin>
-                  <Insets left="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#returnBtn" prefHeight="33.0" prefWidth="130.0" text="Return" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets left="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#infoBtn" prefHeight="33.0" prefWidth="131.0" text="More Info" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets left="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#printFileBtn" prefHeight="33.0" prefWidth="126.0" text="Print to file" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets left="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#reloadBtn" prefHeight="33.0" prefWidth="138.0" text="Reload Database" GridPane.columnIndex="2">
+            <Button mnemonicParsing="false" onAction="#reloadBtn" prefHeight="33.0" prefWidth="121.0" text="Reload Database" GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets right="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
-            <Button fx:id="Manage" disable="true" mnemonicParsing="false" onAction="#manageBtn" prefHeight="33.0" prefWidth="130.0" text="Manage Users" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Button fx:id="Manage" disable="true" mnemonicParsing="false" onAction="#manageBtn" prefHeight="33.0" prefWidth="130.0" text="Manage Users" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets right="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#addItemBtn" prefHeight="33.0" prefWidth="131.0" text="Add Item" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Button mnemonicParsing="false" onAction="#addItemBtn" prefHeight="33.0" prefWidth="131.0" text="Add Item" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets right="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#removeItemBtn" prefHeight="33.0" prefWidth="126.0" text="Remove Item" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button mnemonicParsing="false" onAction="#removeItemBtn" prefHeight="33.0" prefWidth="126.0" text="Remove Item" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets right="15.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
             <TextArea fx:id="outputConsole" editable="false" prefHeight="150.0" prefWidth="221.0" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowSpan="4" />
+            <Button mnemonicParsing="false" onAction="#imageBtn" prefHeight="33.0" prefWidth="138.0" text="Get image" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" onAction="#reportBtn" prefHeight="33.0" prefWidth="138.0" text="Generate Report" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
   </children>
