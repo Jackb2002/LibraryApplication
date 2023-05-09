@@ -217,6 +217,18 @@ public class MainController {
             System.out.println("Item not found");
         }
 
+        //count copies
+        Item item = Database.GetItemByID(ID);
+        String name = item.Name;
+        //see how many books have the same name
+        int count = 0;
+        for(Item i : Item.Items){
+            if(i.Name.equals(name)){
+                count++;
+            }
+        }
+        info += "\n\nThere are " + count + " copies of this item in the library.";
+
         outputConsole.setText(info);
         return info;
     }
@@ -292,7 +304,6 @@ public class MainController {
         stage.setScene(scene);
         stage.showAndWait();
     }
-    //TODO
     @FXML
     private void imageBtn(){
         var row = getCurrentRow();
@@ -350,6 +361,5 @@ public class MainController {
         }
         report += "Total Profit From Loans: £" + loan_profit + "\n";
         outputConsole.setText(report);
-
     }
 }
