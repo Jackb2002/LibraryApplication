@@ -17,7 +17,7 @@ To run the Library Application, ensure that the following prerequisites are met:
 To install the Library Application, follow these steps:
 1. Download the application and the premade database file.
 2. Place both files in a desired directory on your system.
-3. If necessary, you can modify the premade database file by replacing it with your own database file.
+3. If necessary, you can modify the premade database file by replacing it with your own information.
 
 ## **Configuration Requirements**
 
