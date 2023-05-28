@@ -9,7 +9,8 @@ The Library Application is designed to manage users, items, and loaning activiti
 To run the Library Application, ensure that the following prerequisites are met:
 - Java OpenJDK 19.0.2 is installed on your system.
 - The application is built using Gradle.
-- JavaFX and SQLite are used, requiring the JDBC 3.41.2.1 connector.
+- JavaFX 
+- SQLite, requiring the JDBC 3.41.2.1 connector.
 
 ## **Installation Steps**
 
