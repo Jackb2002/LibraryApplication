@@ -72,7 +72,7 @@ public class Database {
 
     public static void InsertUser(User user) {
         String username = user.Username;
-        String password = user.Password;
+        String password = user.GetPassword();
         Boolean Admin = user.Admin;
 
         //insert into user table

@@ -6,7 +6,7 @@ public class User {
     public static ArrayList<User> Users;
     public static User Current;
     public String Username;
-    public String Password;
+    private String Password;
     public boolean Admin;
 
     public User(String Username, String Password, boolean Admin){
@@ -18,6 +18,8 @@ public class User {
     public void ChangePassword(String Password){
         this.Password = Password;
     }
-
+    public String GetPassword() {
+        return Password;
+    }
 
 }

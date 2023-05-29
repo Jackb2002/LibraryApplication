@@ -5,6 +5,7 @@ import com.library.libraryapplication.Items.Book;
 import com.library.libraryapplication.Items.BrailleBook;
 import com.library.libraryapplication.Items.Film;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -72,6 +73,22 @@ public class NewController {
 
     @FXML
     private void addBtn(){
+        var d_Price = dayPrice.getText();
+        var o_Price = oPrice.getText();
+        //check valid doubles
+        try{
+            if(Double.parseDouble(d_Price) > 0 || Double.parseDouble(o_Price) > 0){
+                return;
+            }
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Invalid");
+            alert.setHeaderText("Invalid");
+            alert.setContentText("Invalid price data entered");
+            alert.showAndWait();
+            return;
+        }
+
         var currentCombo = combo.getSelectionModel().getSelectedItem().toString();
         switch(currentCombo){
             case("Book"):
