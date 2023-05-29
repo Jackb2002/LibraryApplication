@@ -9,14 +9,15 @@ The Library Application is designed to manage users, items, and loaning activiti
 To run the Library Application, ensure that the following prerequisites are met:
 - Java OpenJDK 19.0.2 is installed on your system.
 - The application is built using Gradle.
-- JavaFX and SQLite are used, requiring the JDBC 3.41.2.1 connector.
+- JavaFX 
+- SQLite, requiring the JDBC 3.41.2.1 connector.
 
 ## **Installation Steps**
 
 To install the Library Application, follow these steps:
 1. Download the application and the premade database file.
 2. Place both files in a desired directory on your system.
-3. If necessary, you can modify the premade database file by replacing it with your own database file.
+3. If necessary, you can modify the premade database file by replacing it with your own information.
 
 ## **Configuration Requirements**
 
